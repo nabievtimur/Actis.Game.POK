@@ -7,7 +7,7 @@ div.mainMenu
 {
 	height: 100%;
 }
-
+ 
 menu
 {
 	width: 1200px;
@@ -43,3 +43,28 @@ button
 	height: 500px;
 	width: 550px;
 }
+
+.canvasContainer
+{
+	left: 0;
+	width: 100%;
+	position: absolute;
+}
+
+#HeaderCanvasContainer
+{
+	top: 0px;
+	height: 5%;
+}
+
+#PoleCanvasContainer
+{
+	top: 5%;
+	height: 95%;
+}
+
+/*#HeaderCanvas, #PoleCanvas
+{
+	height: 100%;
+	top: 0px;
+}*/

@@ -1,12 +1,16 @@
-canvasColor = '#D0D0D0';
-canvasRectBorderColor = '#0F0F0F';
-canvasAccentColor = '#000000';
-canvasTimerColor = '#200672';
+var canvasColor = '#D0D0D0';
+var canvasRectBorderColor = '#0F0F0F';
+var canvasAccentColor = '#000000';
+var canvasTimerColor = '#06998a';
+var canvasHeaderColor = '#E0E0E0'
+
+var docHeader = document.getElementById("HeaderCanvas");
+var docPole = document.getElementById("PoleCanvas");
 
 class StylePainter {
 	colorFiller(ctx, x, y, rectSize, value) {
-		let rectH = Math.round(window.innerHeight / rectSize.RectsCountY);
-		let rectW = Math.round(window.innerWidth / rectSize.RectsCountX);
+		let rectH = Math.round(ctx.height / rectSize.RectsCountY);
+		let rectW = Math.round(ctx.width / rectSize.RectsCountX);
 
 		var typesColor = [	"#FF0000", "#FF3500", "#FF5900", "#FF7400", "#FF8900", "#FF9A00", "#FFAA00", "#FFB800", "#FFC600", 
 							"#FFD300", "#FFE100", "#FFEF00", "#FFFF00", "#DCF900", "#BDF400", "#9FEE00", "#7CE700", "#4DDE00", 
@@ -18,7 +22,7 @@ class StylePainter {
 							"#200772", "#081472", "#3A0470", "#48036F", "#5D016D", "#770060", "#85004B", "#8F0037", "#990021" ];
 		
 		ctx.fillStyle = "#808080";
-		ctx.fillRect(rectW * y + 8, rectH * x + 8, rectW - 10, rectH - 10);
+		ctx.fillRect(rectW * y + 10, rectH * x + 10, rectW - 10, rectH - 10);
 		
 		if (value < 0) {
 			return;
@@ -55,10 +59,61 @@ class StylePainter {
 	}
 
 	fillCtxAccent(ctx, x, y, rectSize) {
-		rectH = Math.round(window.innerHeight / rectSize.RectsCountY);
-		rectW = Math.round(window.innerWidth / rectSize.RectsCountX);
+		let rectH = Math.round(ctx.height / rectSize.RectsCountY);
+		let rectW = Math.round(ctx.width / rectSize.RectsCountX);
 		ctx.fillStyle = canvasAccentColor;
 		ctx.fillRect(rectW * x + 3, rectH * y + 3, rectW - 6, rectH - 6);
+	}
+}
+
+class Timer {
+	constructor(time, fps) {
+		console.log("construct");
+		this.timerFull = time * fps;
+		this.timer = this.timerFull;
+		this.fps = fps;
+		this.ctx = docHeader.getContext("2d");
+		this.activate = true;
+		this.interval = null;
+	}
+	
+	// и отрисовка и декримент
+	paint() {
+		this.timer--;
+		if (this.activate && this.timer <= 0) {
+			this.stop();
+			this.activate = false;
+			alert("Game over");
+			document.location.href = "index.html";
+		}
+		
+		this.ctx.fillStyle = canvasHeaderColor;
+		this.ctx.fillRect(0, 0, this.ctx.width, this.ctx.height);
+		
+		let timerWidth = (this.timer * this.timer / this.timerFull) / this.timerFull;
+		if (timerWidth > 1) { timerWidth = 1; }
+		this.ctx.fillStyle = canvasTimerColor;
+		this.ctx.fillRect(
+			this.ctx.width * 0.05, 
+			this.ctx.height / 4, 
+			timerWidth * (this.ctx.width * 0.9), 
+			this.ctx.height / 2);
+	}
+	
+	timerAdd(timerProc) {
+		this.timer += this.timerFull / 100 * timerProc;
+	}
+	
+	timerSub(timerProc) {
+		this.timer -= this.timerFull / 100 * timerProc;
+	}
+	
+	start() {
+		this.interval = setInterval(() => { this.paint(); }, 1000 / this.fps);
+	}
+	
+	stop() {
+		clearInterval(this.interval);
 	}
 }
 
@@ -68,20 +123,20 @@ class Game {
 	// canvasContext - контекс для рисования
 	// mode - режим игры
 	// style - стиль плиточек
-	constructor(level, canvasContext, mode, style) {
+	constructor(level, mode, style) {
 		let x = 15 + level;
 		let y = 8 + level;
-		this.ctx = canvasContext;
+		this.ctx = docPole.getContext("2d");
 		this.rectSize = { RectsCountX: level + 17, RectsCountY: level + 10 };
 		this.mode = mode;
 		this.style = new StylePainter(style);
 		this.gameRects = [];
 		this.last = {x: 0, y: 0};
-		this.timer = Math.pow(level * 100, 1.3);
-		this.timerFull = this.timer;
-		this.pathTimer = 0;
+		this.timer = new Timer(Math.pow(level * 100, 1.3), 30);
+		this.activePath = 0;
 		this.path = [];
 		this.accent = {startPos: {x: 0, y: 0}, endPos: {x: 0, y: 0}};
+		this.allowMistake = true;
 
 		let pickedList = [];
 		for (let i = 0; i < this.rectSize.RectsCountY; i++) {
@@ -112,22 +167,17 @@ class Game {
 		}
 	}
 	
-	timerDec() {
-		this.timer --;
-		if (this.timer <= 0) {
-			alert("Game over.");
-			document.location.href = "index.html";
-		}
+	start() {
+		console.log("Start Game");
+		this.timer.start();
+		this.paint();
 	}
 
 	paint() {
-		this.ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-		let rectH = Math.round(window.innerHeight / this.rectSize.RectsCountY);
-		let rectW = Math.round(window.innerWidth / this.rectSize.RectsCountX);
-
-		this.ctx.fillStyle = canvasTimerColor;
-		this.ctx.fillRect(40, 10, (window.innerWidth - 80) * this.timer / this.timerFull, rectH / 4);
-
+		this.ctx.clearRect(0, 0, this.ctx.width, this.ctx.height);
+		let rectH = Math.round(this.ctx.height / this.rectSize.RectsCountY);
+		let rectW = Math.round(this.ctx.width / this.rectSize.RectsCountX);
+		
 		if ((this.last.y != 0) && (this.last.x != 0)) {
 			if (this.gameRects[this.last.y][this.last.x] != -1) {
 				this.ctx.fillStyle = canvasRectBorderColor;
@@ -157,21 +207,23 @@ class Game {
 				this.ctx.lineTo(rectW * this.path[i].x + rectW / 2, rectH * this.path[i].y + rectH / 2);
 			}
 			this.ctx.stroke(); 
-			if (this.pathTimer == 0) {
-				this.pathTimer = 2;
-			}
-			else {
-				this.pathTimer--;
-			}
-			if (this.pathTimer == 0) {
-				this.path = [];
-			}
+			this.activePath++;
+			setTimeout(() => { 
+				if (this.activePath <= 1) {
+					this.activePath = 0;
+					this.path = [];
+					this.paint();
+				}
+				else {
+					this.activePath--;
+				}
+			}, 1000);
 		}
 	}
 
 	onClick(x, y) {
-		let rectH = Math.round(window.innerHeight / this.rectSize.RectsCountY);
-		let rectW = Math.round(window.innerWidth / this.rectSize.RectsCountX);
+		let rectH = Math.round(this.ctx.height / this.rectSize.RectsCountY);
+		let rectW = Math.round(this.ctx.width / this.rectSize.RectsCountX);
 		let Xnumber = Math.floor(x / rectW);
 		let Ynumber = Math.floor(y / rectH);
 		if (this.gameRects[Ynumber][Xnumber] == -1) {
@@ -192,10 +244,21 @@ class Game {
 				if (0 == this.pathFinder(this.last.x, this.last.y, Xnumber, Ynumber, 2, false)) {
 					this.gameRects[Ynumber][Xnumber] = -1;
 					this.gameRects[this.last.y][this.last.x] = -1;
+					this.allowMistake = true;
+					this.timer.timerAdd(1);
 					if(this.validate()) {
 						this.regenerate();
 					}
 					this.paint();
+				}
+				else{
+					if (this.allowMistake) {
+						this.allowMistake = false;
+					}
+					else {
+						this.allowMistake = true;
+						this.timer.timerSub(5);
+					}
 				}
 				this.last.x = 0;
 				this.last.y = 0;
@@ -372,72 +435,20 @@ class Game {
 				}
 			}
 		}
+		this.timer.stop();
 		return true;
-	}
-}
-
-function paint(ctx, gameSettings, gameRects, last) {
-	ctx.height = window.innerHeight;
-	ctx.width = window.innerWidth;
-	ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
-	rectH = Math.round(window.innerHeight / (gameSettings.RectsCountY));
-	rectW = Math.round(window.innerWidth / (gameSettings.RectsCountX));
-
-	ctx.fillStyle = canvasTimerColor;
-	ctx.fillRect(40, 10, (window.innerWidth - 80) * timer / timerFull, rectH / 4);
-
-	if (last.y != 0) {
-		if (gameRects[last.y][last.x] != -1) {
-			ctx.fillStyle = canvasRectBorderColor;
-			ctx.fillRect(rectW * last.x + 3, rectH * last.y + 3, rectW - 6, rectH - 6);
-		}
-	}
-	
-	if ((acsent.j) && (acsent.i) && (acsent.m) && (acsent.n)) {
-		ctx.fillStyle = canvasAcsentColor;
-		ctx.fillRect(rectW * acsent.j + 3, rectH * acsent.i + 3, rectW - 6, rectH - 6);
-		ctx.fillRect(rectW * acsent.m + 3, rectH * acsent.n + 3, rectW - 6, rectH - 6);
-	}
-
-	for (var i = 1; i < gameSettings.RectsCountY + 1; i++) {
-		for (var j = 1; j < gameSettings.RectsCountX + 1; j++) {
-			if (gameRects[i][j] != -1) {
-				ctx.fillStyle = getColorByTypeAndTypes(gameRects[i][j]);
-				ctx.fillRect(rectW * j + 5, rectH * i + 5, rectW - 10, rectH - 10);
-				ctx.fillStyle = "#FFFFFF";
-				ctx.font = "48px serif";
-				ctx.fillText(gameRects[i][j], rectW * j + 10, rectH * (i + 1) - 10, rectW - 20);
-			}
-		}
-	}
-
-	if (path.length > 0) {
-		console.log("paint Path" + path[0]);
-		ctx.beginPath();       // Начинает новый путь
-		ctx.lineWidth = 5;
-		ctx.fillStyle = canvasRectBorderColor;
-		ctx.moveTo(rectW * path[0].x + rectW / 2, rectH * path[0].y + rectH / 2);
-		for (i = 1; i < path.length; i++) {
-			ctx.lineTo(rectW * path[i].x + rectW / 2, rectH * path[i].y + rectH / 2);
-		}
-		ctx.stroke();          // Отображает путь
 	}
 }
 
 function nextExpand() {
 	level++;
 	alert("level - " + level);
-	game = new Game(level, doc.getContext('2d'), 0, 0);
-	
-	window.addEventListener(`resize`, event => {
-		canvas.height = window.innerHeight;
-		canvas.width = window.innerWidth;
-		game.paint();
-	}, false);
+	game = new Game(level, 0, 0);
+	game.start();
 
-	window.onclick = function (event) {
+	docPole.onclick = function (event) {
 		x = event.pageX;
-		y = event.pageY;
+		y = event.pageY - docHeader.height;
 		game.onClick(x, y);
 		if (game.check()) {
 			next();
@@ -449,34 +460,43 @@ function nextExpand() {
 
 function nextGravity() {
 	alert("level - " + (i - 8));
-	game = new Game(level, doc.getContext('2d'), 0, 0);
+	let PoleDocument = document.getElementById("PoleCanvas");
+	let game = new Game(level, 0, 0);
+	game.start();
 	
-	window.addEventListener(`resize`, event => {
-		canvas.height = window.innerHeight;
-		canvas.width = window.innerWidth;
-		game.paint();
-	}, false);
-
-	window.onclick = function (event) {
+	docPole.onclick = function (event) {
 		x = event.pageX;
-		y = event.pageY;
+		y = event.pageY + docHeader.height;
 		game.onClick(x, y);
 	}
-		
+	
 	console.log("new level");
 }
 
 function getQueryStringValue (key) {  
 	return decodeURIComponent(window.location.search.replace(new RegExp("^(?:.*[&\\?]" + encodeURIComponent(key).replace(/[\.\+\*]/g, "\\$&") + "(?:\\=([^&]*))?)?.*$", "i"), "$1"));  
-}  
+}
+
+function canvasResize() {
+	docHeader.height = document.getElementById("HeaderCanvasContainer").getBoundingClientRect().height;
+	docHeader.width = document.getElementById("HeaderCanvasContainer").getBoundingClientRect().width;
+	let HeaderCanvas = docHeader.getContext('2d');
+	HeaderCanvas.height = docHeader.height;
+	HeaderCanvas.width = docHeader.width;
+	
+	docPole.height = document.getElementById("PoleCanvasContainer").getBoundingClientRect().height;
+	docPole.width = document.getElementById("PoleCanvasContainer").getBoundingClientRect().width;
+	let PoleCanvas = docPole.getContext('2d');
+	PoleCanvas.height = docPole.height;
+	PoleCanvas.width = docPole.width;
+};
+
+// main code 
+console.log("GameStart");
 
 let mode = getQueryStringValue("mode");
 console.log(mode);
-
-// main code 
-var doc = document.getElementById("canvas");
-canvas.height = window.innerHeight;
-canvas.width = window.innerWidth;
+canvasResize();
 
 var level = 0;
 if (mode === "expand") {
@@ -485,17 +505,9 @@ if (mode === "expand") {
 else{
 	var next = nextGravity;
 }
-
-setInterval(function() {
-	game.timerDec();
-	game.paint();
-	console.log("timer");
-}, 1000);
+next();
 
 window.addEventListener(`resize`, event => {
-	canvas.height = window.innerHeight;
-	canvas.width = window.innerWidth;
+	canvasResize();
 	game.paint();
 }, false);
-
-next();
