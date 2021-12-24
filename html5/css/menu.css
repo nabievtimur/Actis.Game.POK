@@ -1,15 +1,3 @@
-.bg {
-    background: url(https://images.wallpaperscraft.ru/image/single/gory_ozero_vershiny_vid_sverkhu_119133_1920x1080.jpg) no-repeat center;
-    background-size: cover;
-    position: absolute;
-    z-index: 1;
-    filter: blur(15px);
-    left: 1px;
-    right: 1px;
-    top: 1px;
-    bottom: 1px;
-}
-
 .main_menu {
     /* position: absolute; */
     width: 500px;
