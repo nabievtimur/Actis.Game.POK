@@ -43,10 +43,7 @@ class Timer {
 	}
 	
 	timerAddSec(time) {
-		if(typeof timerProc == "undefined") {
-			return;
-		}
-		console.log("Timer.timerAdd(" + timerProc + ").");
+		console.log("Timer.timerAdd(" + time + ").");
 		this.time += time * this.fps;
 	}
 	
@@ -494,7 +491,7 @@ class Game {
 	onClick(x, y) {
 		let res = this.gamePolePainter.onClick(x, y);
 		if (res === 1) {
-			this.timer.timerAddSec(5);
+			this.timer.timerAddSec(3);
 		}
 		else if (res === -5) {
 			this.timer.timerAdd(-5);
