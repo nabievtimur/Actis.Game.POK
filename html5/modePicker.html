@@ -1,33 +1,58 @@
-`cd <!doctype html>
+<!doctype html>
 
 <html lang="ru">
 <head>
-  <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Меню</title>
 
-  <title>New Pok game</title>
-  <meta name="description" content="">
-  <meta name="keywords" content="">
-  <meta name="author" content="Набиевы">
-
-  <link rel="stylesheet" href="css/styles.css">
-
-  <!--[if lt IE 9]>
-    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
-  <![endif]-->
+    <link rel="stylesheet" href="css/menu.css">
 </head>
-
 <body>
-  <div class="mainMenu">
+    <div class="bg"></div>
+    <form class="main_menu">
+        <button 
+        				id="d1" class="checkbox_button_menu"
+        				onclick='javascript: sessionStorage.diff = 6' >Без сложности</button>
+        <button 
+        				id="d2" class="checkbox_button_menu"
+        				onclick='javascript: sessionStorage.diff = 5' >Очень легко</button>
+        <button 
+        				id="d3" class="checkbox_button_menu"
+        				onclick='javascript: sessionStorage.diff = 4' >Легко</button>
+        <button 
+        				id="d4" class="checkbox_button_menu"
+        				onclick='javascript: sessionStorage.diff = 3' >Средне</button>
+        <button 
+        				id="d5" class="checkbox_button_menu"
+        				onclick='javascript: sessionStorage.diff = 2' >Сложно</button>
+        <button 
+        				id="d6" class="checkbox_button_menu"
+        				onclick='javascript: sessionStorage.diff = 1' >Очень сложно</button>
+        <button 
+        				id="d7" class="checkbox_button_menu"
+        				onclick='javascript: sessionStorage.diff = 0' >Почти невозможно</button>
+    <!-- </form>
+    <form class="main_menu"> -->
+								<button
+												onclick='javascript: sessionStorage.mode = "expand"; console.log("expand")' >
+												<img src=".\image\ExpandGameMode.svg" style="vertical-align: middle">
+								</button>
+      			<button
+        					onclick='javascript: sessionStorage.mode = "gravity"; console.log("gravity");' >
+        				 <img src=".\image\GravityGameMode.svg" style="vertical-align: middle">
+      			</button>
+    </form>
+    <button 
+        				id="start" class="button_menu"
+        				onclick='javascript: window.location.href = "game.html"' >Начать ИГРУ</button>
+</body>
+<body>
+  <div class="main_menu">
     <menu>
-      <button
-        onclick='javascript: document.location.href = ".\game.html?mode=expand";' >
-        <img src=".\image\ExpandGameMode.svg" style="vertical-align: middle">
-      </button>
-      <button
-        onclick='javascript: document.location.href = ".\game.html?mode=gravity";' >
-        <img src=".\image\GravityGameMode.svg" style="vertical-align: middle">
-      </button>
+      
      </menu>
   </div>
-</body>
+</body> 
 </html>
