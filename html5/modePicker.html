@@ -2,57 +2,82 @@
 
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Меню</title>
+				<title>New Pok game</title>
+				<link rel="stylesheet" href="css/styles.css">
+  		<link rel="stylesheet" href="css/menu.css">
+				
+				<link rel="preconnect" href="https://fonts.googleapis.com">
+				<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+				<link href="https://fonts.googleapis.com/css2?family=Comfortaa&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="css/menu.css">
+				<meta charset="utf-8">
+				<meta name="author" content="Набиевы">
 </head>
+
 <body>
-    <div class="bg"></div>
-    <form class="main_menu">
-        <button 
-        				id="d1" class="checkbox_button_menu"
-        				onclick='javascript: sessionStorage.diff = 6' >Без сложности</button>
-        <button 
-        				id="d2" class="checkbox_button_menu"
-        				onclick='javascript: sessionStorage.diff = 5' >Очень легко</button>
-        <button 
-        				id="d3" class="checkbox_button_menu"
-        				onclick='javascript: sessionStorage.diff = 4' >Легко</button>
-        <button 
-        				id="d4" class="checkbox_button_menu"
-        				onclick='javascript: sessionStorage.diff = 3' >Средне</button>
-        <button 
-        				id="d5" class="checkbox_button_menu"
-        				onclick='javascript: sessionStorage.diff = 2' >Сложно</button>
-        <button 
-        				id="d6" class="checkbox_button_menu"
-        				onclick='javascript: sessionStorage.diff = 1' >Очень сложно</button>
-        <button 
-        				id="d7" class="checkbox_button_menu"
-        				onclick='javascript: sessionStorage.diff = 0' >Почти невозможно</button>
-    <!-- </form>
-    <form class="main_menu"> -->
-								<button
-												onclick='javascript: sessionStorage.mode = "expand"; console.log("expand")' >
-												<img src=".\image\ExpandGameMode.svg" style="vertical-align: middle">
-								</button>
-      			<button
-        					onclick='javascript: sessionStorage.mode = "gravity"; console.log("gravity");' >
-        				 <img src=".\image\GravityGameMode.svg" style="vertical-align: middle">
-      			</button>
-    </form>
-    <button 
-        				id="start" class="button_menu"
-        				onclick='javascript: window.location.href = "game.html"' >Начать ИГРУ</button>
-</body>
-<body>
-  <div class="main_menu">
-    <menu>
-      
-     </menu>
-  </div>
+				<div class="menu">
+								<div class="menuMode">
+												<button
+																class="menuButtonImage"
+																id="menuExpand"
+																onclick='javascript: sessionStorage.mode = "expand"; console.log("expand")' >
+																<img 
+																				src=".\image\ExpandGameMode.svg" 
+																				style='scaleType="fitXY"'>
+												</button>
+												<button
+																class="menuButtonImage"
+																id="menuGravity"
+																onclick='javascript: sessionStorage.mode = "gravity"; console.log("gravity");' >
+																<img 
+																				src=".\image\GravityGameMode.svg" 
+																				style='scaleType="fitXY"'>
+												</button>
+								</div>
+								<div class="menuDiff">
+												<button
+																style="font-family:'Comfortaa', cursive"
+  								  				class="menuButtonSmall"
+  								  				onclick='javascript: sessionStorage.diff = 1'
+  								  				id="menuDiff1">
+  												  				Элементарно
+  				  				</button>
+  				  				<button
+																style="font-family:'Comfortaa', cursive"
+  								  				class="menuButtonSmall"
+  								  				onclick='javascript: sessionStorage.diff = 2'
+  								  				id="menuDiff2">
+  												  				Легко
+  				  				</button>
+  				  				<button
+																style="font-family:'Comfortaa', cursive"
+  								  				class="menuButtonSmall"
+  								  				onclick='javascript: sessionStorage.diff = 3'
+  								  				id="menuDiff3">
+  												  				Нормально
+  				  				</button>
+  				  				<button
+																style="font-family:'Comfortaa', cursive"
+  								  				class="menuButtonSmall"
+  								  				onclick='javascript: sessionStorage.diff = 4'
+  								  				id="menuDiff4">
+  												  				Сложно
+  				  				</button>
+  				  				<button
+																style="font-family:'Comfortaa', cursive"
+  								  				class="menuButtonSmall"
+  								  				onclick='javascript: sessionStorage.diff = 5'
+  								  				id="menuDiff5">
+  												  				Никто ещё не справился
+  				  				</button>
+								</div>
+  				  <button
+												style="font-family:'Comfortaa', cursive"
+  				  				class="menuButton"
+						  				onclick='javascript: window.location.href = "game.html"'
+  				  				id="menuStart">
+  								  				Начать игру
+		  				</button>
+				</div>
 </body> 
 </html>

@@ -1,73 +1,128 @@
-.main_menu {
-    /* position: absolute; */
-    width: 500px;
-    padding: 5px;
-    position: fixed; top: 50%; left: 50%;
-    transform: translate(-50%, -50%);
+.menu {
+    position: absolute;
+    width: 80%;
+    height: 80%; 
+    top: 10%; 
+    left: 10%;
+    background: #A0A0A0;
+    z-index: 1;
+}
+
+.menuMode {
+				position: absolute;
+    width: 38%;
+    height: 68%; 
+    top: 11%; 
+    left: 11%;
+    background: #919191;
     z-index: 2;
 }
 
-.button_menu {
-    display: block;
-    position: relative;
-    width: 100%;
-    height: 50px;
-    margin-bottom: 25px;
-    cursor: pointer;
-    background-color: rgb(65, 65, 65, 0.5);
-    border: none;
-    font-size: 20px;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    transition: all 500ms ease;
-    color: white;
+.menuDiff {
+				position: absolute;
+    width: 38%;
+    height: 68%; 
+    top: 11%; 
+    left: 51%;
+    background: #919191;
+    z-index: 2;
 }
 
-.button_menu:before, 
-.button_menu:after {
-	content: '';
-	position: absolute;	
-	transition: inherit;
-	z-index: -1;
+.menuButton {
+				position: absolute;
+				width: 70%;
+				height: 14%;
+				position: fixed;
+				left: 15%;
+				z-index: 3;
+				color: #A0A0A0;
+				font-family: 'Comfortaa', cursive;
+				font-size: 40px;
+				letter-spacing: 0px;
+				word-spacing: 0px;
+				color: #709493;
+				font-weight: bold;
+				text-decoration: none;
+				font-style: normal;
+				font-variant: small-caps;
+				text-transform: capitalize;
 }
 
-.button_menu:hover {
-	color: black;
-	transition-delay: .50s;
-    background-color: rgb(255, 255, 255, 1);
+.menuButtonImage {
+				position: absolute;
+				width: 30%;
+				height: 26%;
+				position: fixed;
+				left: 15%;
+				z-index: 3;
+				color: #A0A0A0;
 }
 
-.button_menu:hover:before {
-	transition-delay: 0s;
+.menuButtonSmall {
+				position: absolute;
+				width: 30%;
+				height: 10%;
+				position: fixed;
+				left: 55%;
+				z-index: 3;
+				color: #A0A0A0;
+				font-family: 'Comfortaa', cursive;
+				font-size: 20px;
+				letter-spacing: 0px;
+				word-spacing: 0px;
+				color: #709493;
+				font-weight: bold;
+				text-decoration: none;
+				font-style: normal;
+				font-variant: small-caps;
+				text-transform: capitalize;
 }
 
-.button_menu:hover:after {
-	background-color: rgb(255, 255, 255, 1);
-	transition-delay: .35s;
+#menuContinue {
+				top: 14%;
 }
 
-.button_menu:before {
-	top: 0;
-	left: 50%;
-	height: 100%;
-	width: 0;
-	border-bottom: 1px solid rgb(255, 255, 255, 1);
+#menuNewGame {
+				top: 34%;
 }
 
-.button_menu:after {
-	bottom: 0;
-	left: 0;
-	height: 0;
-	width: 100%;
-	background: rgb(255, 255, 255, 1);
+#menuSettings {
+				top: 54%;
 }
 
-.button_menu:hover:before {
-    left: 0;
-    width: 100%;
-} 
+#menuAuthors {
+				top: 74%;
+}
 
-.button_menu:hover:after {
-    bottom: 0;
-	height: 100%;
+#menuExpand {
+				top: 14%;
+}
+
+#menuGravity {
+				top: 44%;
+}
+
+#menuDiff1 {
+				top: 14%;
+}
+
+#menuDiff2 {
+				top: 27%;
+}
+
+#menuDiff3 {
+				top: 40%;
+}
+
+#menuDiff4 {
+				top: 53%;
+}
+
+#menuDiff5 {
+				top: 66%;
+}
+
+#menuStart {
+				top: 80%;
+				height: 8%;
 }
