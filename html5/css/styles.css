@@ -2,3 +2,19 @@ body {
 				width: 100%;
 				height: 100%;
 }
+
+.canvasContainer {
+				left: 0;	
+				width: 100%;
+				position: absolute;
+}
+
+#HeaderCanvasContainer {	
+				top: 0px;
+				height: 5%;
+}
+
+#PoleCanvasContainer {	
+				top: 5%;
+				height: 95%;
+}
