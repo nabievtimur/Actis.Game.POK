@@ -1,72 +1,69 @@
-var canvasColor = '#D0D0D0';
-var canvasRectBorderColor = '#0F0F0F';
-var canvasAccentColor = '#000000';
-var canvasTimerColor = '#06998a';
-var canvasHeaderColor = '#E0E0E0';
-var complexity = 2;
+const COLORS = {
+				CANVAS = '#D0D0D0',
+				RECT_BORDER = '#0F0F0F';
+				ACCENT = '#000000';
+				TIMER = '#06998a';
+				HEADER = '#E0E0E0';
+}
+
+var Instance = {
+				complexity = 0;
+				level = 0;
+				lives = 0;
+				Mode = 0;
+}
 
 var docHeader = document.getElementById("HeaderCanvas");
 var docPole = document.getElementById("PoleCanvas");
 
 // ___________________________________Timer___________________________________
 class Timer {
-	constructor(time, fps, endSignal) {
-		console.log("Timer.construct.");
-		this.timerFull = time * fps;
-		this.time = this.timerFull;
-		this.fps = fps;
-		this.activate = true;
-		this.interval = null;
-		this.endSignal = endSignal;
-		this.paint = null;
-		this.timerPainter = new TimerPainter();
-	}
+				constructor(time, fps, endSignal) {
+								this.timerFull = time * fps;
+								this.time = this.timerFull;
+								this.fps = fps;
+								this.activate = true;
+								this.interval = null;
+								this.endSignal = endSignal;
+								this.paint = null;
+								this.timerPainter = new TimerPainter();
+				}
 	
-	// и отрисовка и декримент
-	tick() {
-		this.time--;
-		if (this.time <= 0) {
-			this.stop();
-			// emit timer end
-			this.timerPainter.paint(this.time, this.timerFull);
-			this.endSignal();
-		}
-		this.timerPainter.paint(this.time, this.timerFull);
-	}
+				// и отрисовка и декримент
+				tick() {
+								this.time--;
+								if (this.time <= 0) {
+												// emit timer end
+												this.stop();
+												this.timerPainter.paint(this.time, this.timerFull);
+												this.endSignal();
+								}
+							 this.timerPainter.paint(this.time, this.timerFull);
+				}
 	
-	timerAdd(timerProc) {
-		if(typeof timerProc == "undefined") {
-			return;
-		}
-		console.log("Timer.timerAdd(" + timerProc + ").");
-		this.time += this.timerFull / 100 * timerProc;
-	}
+				timerAdd(timerProc) {
+								if(typeof timerProc == "undefined") {
+												return;
+								}
+								console.log("Timer.timerAdd(" + timerProc + ").");
+								this.time += this.timerFull / 100 * timerProc;
+				}
 	
-	timerAddSec(time) {
-		console.log("Timer.timerAdd(" + time + ").");
-		this.time += time * this.fps;
-	}
+				timerAddSec(time) {
+								console.log("Timer.timerAdd(" + time + ").");
+								this.time += time * this.fps;
+				}
 	
-	start() {
-		console.log("Timer.start.");
-		this.interval = setInterval(() => { this.tick(); }, 1000 / this.fps);
-		this.timerPainter.paint(this.time, this.timerFull);
-	}
-	
-	stop() {
-		console.log("Timer.stop.");
-		clearInterval(this.interval);
-	}
-	
-	pause() {
-		console.log("Timer.pause.");
-		stop();
-	}
-	
-	resume() {
-		console.log("Timer.resume.");
-		start();
-	}
+				start() {
+								console.log("Timer.start.");
+								this.interval = setInterval(() => { this.tick(); }, 1000 / this.fps);
+								this.timerPainter.paint(this.time, this.timerFull);
+				}
+				
+				stop() {
+								console.log("Timer.stop.");
+								clearInterval(this.interval);
+				}
 }
 
 // ___________________________________TimerPainter___________________________________
